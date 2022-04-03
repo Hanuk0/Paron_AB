@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:paron_ab/model.dart';
+import 'productpage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,21 +17,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        backgroundColor: Colors.white,
+      ),
       title: 'Päron Logistics',
-      home: ProductPage(),
+      home: ProductList(),
     );
   }
 }
 
-class ProductPage extends StatelessWidget {
-  ProductPage({Key? key}) : super(key: key);
+class ProductList extends StatelessWidget {
+  ProductList({Key? key}) : super(key: key);
 
   final _controller = TextEditingController();
 
   void _saveProduct() {
-    final productName = _controller.text;
+    //final productName = _controller.text;
 
-    FirebaseFirestore.instance.collection('Products');
+    FirebaseFirestore.instance.collection(
+        'Products'); //lägg till update här också för att uppdatera saldo
 
     _controller.clear();
   }
@@ -43,9 +51,16 @@ class ProductPage extends StatelessWidget {
 
           //Lista på produkter med namn, produktnummer och pris
           return ListTile(
-            title: Text(doc['name']),
-            subtitle: Text(doc['nr']),
-            trailing: Text(doc['price'].toString() + ' kr'),
+            title: Text(doc['product']),
+            subtitle: Text(doc['quantity'].toString()),
+            trailing: Text(doc['city']),
+
+            //trailing: const Icon(Icons.arrow_forward),
+
+            onTap: () => MaterialPageRoute(
+              builder: ((context) => const ProductPage(StockItem)),
+            ),
+            // trailing: Text(doc['price'].toString() + ' kr'),
           );
         });
   }
@@ -54,6 +69,7 @@ class ProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Products'),
       ),
       body: Column(children: [
@@ -72,7 +88,7 @@ class ProductPage extends StatelessWidget {
           },
         ),
         StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('Products').snapshots(),
+          stream: FirebaseFirestore.instance.collection('Stock').snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return const LinearProgressIndicator();
             return Expanded(child: _buildList(snapshot.requireData));
