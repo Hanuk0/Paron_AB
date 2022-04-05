@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:paron_ab/model.dart';
 import 'productpage.dart';
 
 Future<void> main() async {
@@ -23,10 +21,14 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white,
       ),
       title: 'Päron Logistics',
-      home: ProductList(),
+      home: const ProductPage(),
     );
   }
 }
+
+
+
+/* KANSKE VILL ANVÄNDA SEN 
 
 class ProductList extends StatelessWidget {
   ProductList({Key? key}) : super(key: key);
@@ -58,7 +60,7 @@ class ProductList extends StatelessWidget {
             //trailing: const Icon(Icons.arrow_forward),
 
             onTap: () => MaterialPageRoute(
-              builder: ((context) => const ProductPage(StockItem)),
+              builder: ((context) => const ProductPage()),
             ),
             // trailing: Text(doc['price'].toString() + ' kr'),
           );
@@ -95,6 +97,8 @@ class ProductList extends StatelessWidget {
           },
         )
       ]),
-    );
+    ); 
   }
 }
+
+*/
