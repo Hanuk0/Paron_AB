@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:paron_ab/jtelefonedit.dart';
 
-class jTelefonView extends StatefulWidget {
-  jTelefonView({Key? key}) : super(key: key);
+class JTelefonView extends StatefulWidget {
+  JTelefonView({Key? key}) : super(key: key);
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
-  State<jTelefonView> createState() => _jTelefonViewState();
+  State<JTelefonView> createState() => _JTelefonViewState();
 }
 
-class _jTelefonViewState extends State<jTelefonView> {
+class _JTelefonViewState extends State<JTelefonView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,31 +18,48 @@ class _jTelefonViewState extends State<jTelefonView> {
           centerTitle: true,
           title: const Text('jTelefon'),
         ),
-        body: StreamBuilder<QuerySnapshot>(
-          stream: widget._firestore
-              .collection('Stock1')
-              .doc('jTelefon')
-              .collection('jTelefon1')
-              .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return const Text('Loading...');
-            }
-            return ListView.builder(
-                itemCount: snapshot.data?.docs.length,
-                itemBuilder: (context, index) {
-                  String prodName = snapshot.data!.docs[index]['prodName'];
-                  String prodCity = snapshot.data!.docs[index]['prodCity'];
-                  dynamic prodQuant = snapshot.data!.docs[index]['prodQuant'];
+        body: Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+              Container(height: 30),
+              const Text(
+                ('Warehouses'),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Container(height: 20),
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: widget._firestore
+                      .collection('Stock1')
+                      .doc('jTelefon')
+                      .collection('jTelefon1')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Text('Loading...');
+                    }
+                    return ListView.builder(
+                        itemCount: snapshot.data?.docs.length,
+                        itemBuilder: (context, index) {
+                          String prodName =
+                              snapshot.data!.docs[index]['prodName'];
+                          String prodCity =
+                              snapshot.data!.docs[index]['prodCity'];
+                          dynamic prodQuant =
+                              snapshot.data!.docs[index]['prodQuant'];
 
-                  return CardItem(
-                      prodName: prodName,
-                      prodCity: prodCity,
-                      prodQuant: prodQuant);
-                });
-          },
-        ));
+                          return CardItem(
+                              prodName: prodName,
+                              prodCity: prodCity,
+                              prodQuant: prodQuant);
+                        });
+                  },
+                ),
+              )
+            ])));
   }
 }
 
@@ -69,8 +86,22 @@ class _CardItemState extends State<CardItem> {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        contentPadding: const EdgeInsets.all(16),
+        leading: const Icon(Icons.warehouse_sharp),
         title: Text(widget.prodCity),
+        subtitle: const Text('Edit stock'),
         trailing: Text('Quantity ' + widget.prodQuant.toString()),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => JTelefonEdit(
+                  prodCity: widget.prodCity,
+                  prodName: '',
+                  prodQuant: widget.prodQuant,
+                ),
+              ));
+        },
       ),
     );
   }

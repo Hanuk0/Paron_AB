@@ -29,7 +29,7 @@ class ProductPage extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => jTelefonView(),
+                      builder: (context) => JTelefonView(),
                     ));
               },
               child: const Card(
