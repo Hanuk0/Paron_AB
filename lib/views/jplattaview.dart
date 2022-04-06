@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class JPlattaView extends StatefulWidget {
@@ -70,7 +69,10 @@ class _CardItemState extends State<CardItem> {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        contentPadding: const EdgeInsets.all(16),
+        leading: const Icon(Icons.warehouse_sharp),
         title: Text(widget.prodCity),
+        subtitle: const Text('Edit stock'),
         trailing: Text('Quantity ' + widget.prodQuant.toString()),
       ),
     );
