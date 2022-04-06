@@ -1,18 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:paron_ab/model.dart';
-import 'model.dart';
 
 class JTelefonEdit extends StatefulWidget {
   JTelefonEdit(
       {Key? key,
-      required this.id,
       required this.prodName,
       required this.prodCity,
       this.prodQuant})
       : super(key: key);
 
-  late String id;
   String prodName;
   String prodCity;
   dynamic prodQuant;
@@ -29,16 +25,10 @@ class _JTelefonEditState extends State<JTelefonEdit> {
   final TextEditingController jTelefonController = TextEditingController();
 
   //INLEVERANS JTELEFON
-  void _addJTelefonQuantity(StockItem stock) async {
-    var collection = FirebaseFirestore.instance
-        .collection('Stock_test')
-        .doc('jTelefonNorrköping')
-        .collection('Stock_test')
-        .doc('jTelefonFrankfurt')
-        .collection('Stock_test')
-        .doc('jTelefonCupertino');
+  void _addJTelefonQuantity() async {
+    var collection = FirebaseFirestore.instance.collection('Stock_test');
 
-    var docSnapshot = await collection.get();
+    var docSnapshot = await collection.doc('jTelefonNorrköping').get();
 
     if (docSnapshot.exists) {
       Map<String, dynamic> data = docSnapshot.data()!;
@@ -49,17 +39,13 @@ class _JTelefonEditState extends State<JTelefonEdit> {
         num2 = jtelefonsavedquantity;
         sum = num1 + num2;
       });
-      _updateJTelefonQuantity(StockItem(
-          id: stock.id,
-          prodCity: stock.prodCity,
-          prodName: stock.prodName,
-          prodQuant: stock.prodQuant));
+      _updateJTelefonQuantity();
       jTelefonController.clearComposing();
     }
   }
 
   //UTLEVERANS JTELEFON
-  void _subtractJTelefonQuantity(StockItem stock) async {
+  void _subtractJTelefonQuantity() async {
     var collection = FirebaseFirestore.instance.collection('Stock_test');
     var docSnapshot = await collection.doc('jTelefonNorrköping').get();
     if (docSnapshot.exists) {
@@ -71,17 +57,13 @@ class _JTelefonEditState extends State<JTelefonEdit> {
         num2 = jtelefonsavedquantity;
         sum = num2 - num1;
       });
-      _updateJTelefonQuantity(StockItem(
-          id: stock.id,
-          prodCity: stock.prodCity,
-          prodName: stock.prodName,
-          prodQuant: stock.prodQuant));
+      _updateJTelefonQuantity();
       jTelefonController.clearComposing();
     }
   }
 
   //UPPDATERA LAGERSALDO
-  void _updateJTelefonQuantity(StockItem stock) {
+  void _updateJTelefonQuantity() {
     final jTelefonQuantity = sum;
 
     FirebaseFirestore.instance
@@ -121,11 +103,7 @@ class _JTelefonEditState extends State<JTelefonEdit> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      _addJTelefonQuantity(StockItem(
-                          id: widget.id,
-                          prodCity: widget.prodCity,
-                          prodName: widget.prodName,
-                          prodQuant: widget.prodQuant));
+                      _addJTelefonQuantity();
                       Navigator.pop(context);
                     },
                     child: const Text(
@@ -139,11 +117,7 @@ class _JTelefonEditState extends State<JTelefonEdit> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      _subtractJTelefonQuantity(StockItem(
-                          id: widget.id,
-                          prodCity: widget.prodCity,
-                          prodName: widget.prodName,
-                          prodQuant: widget.prodQuant));
+                      _subtractJTelefonQuantity();
                       Navigator.pop(context);
                     },
                     child: const Text(

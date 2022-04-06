@@ -3,16 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:paron_ab/jtelefonedit.dart';
 
 class JTelefonView extends StatefulWidget {
-  JTelefonView({Key? key}) : super(key: key);
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  JTelefonView({
+    Key? key,
+  }) : super(key: key);
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   State<JTelefonView> createState() => _JTelefonViewState();
 }
 
 class _JTelefonViewState extends State<JTelefonView> {
+  //variabler som används för att beräkna totalt lagersaldo
+  var num1 = 0, num2 = 0, num3 = 0, sum = 0;
+
+//funktion för att räkna ut totalt lagersaldo
+  void calcTotalSumJTelefon() async {
+    var collection = FirebaseFirestore.instance.collection('jTelefon');
+    var docSnapshot = await collection.doc('jTelefonID').get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      var jtelefonsavedCupertinoquantity = data['jTelefonCupertinoQuant'];
+      var jtelefonsavedFrankfurtquantity = data['jTelefonFrankfurtQuant'];
+      var jtelefonsavedNorrkopingquantity = data['jTelefonNorrkopingQuant'];
+
+      if (!mounted) return; //ta bort om något knasar
+
+      setState(() {
+        num1 = jtelefonsavedNorrkopingquantity;
+        num2 = jtelefonsavedCupertinoquantity;
+        num3 = jtelefonsavedFrankfurtquantity;
+        sum = num1 + num2 + num3;
+      });
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext contextk) {
+    calcTotalSumJTelefon();
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -24,6 +51,22 @@ class _JTelefonViewState extends State<JTelefonView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
               Container(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              Container(height: 10),
+              const Text('Product number: P001'),
+              Container(height: 10),
+              const Text('Product price: 8900 kr'),
+              Container(height: 20),
+              Text(
+                'Total stock jTelefon: $sum ',
+                style: const TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),
+              Container(height: 30),
               const Text(
                 ('Warehouses'),
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -32,9 +75,8 @@ class _JTelefonViewState extends State<JTelefonView> {
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
                   stream: widget._firestore
-                      .collection('Stock1')
-                      .doc('jTelefon')
-                      .collection('jTelefon1')
+                      .collection('Stock_test')
+                      .where('prodNr', isEqualTo: 'P001')
                       .snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -58,7 +100,9 @@ class _JTelefonViewState extends State<JTelefonView> {
                         });
                   },
                 ),
-              )
+              ),
+              //Container(height: 20),
+              //const Text('Total Stock: '),
             ])));
   }
 }
@@ -67,7 +111,6 @@ class CardItem extends StatefulWidget {
   late String prodName;
   late String prodCity;
   late dynamic prodQuant;
-  //late String prodNr;
   //late dynamic prodPrice;
 
   CardItem(
@@ -97,7 +140,7 @@ class _CardItemState extends State<CardItem> {
               MaterialPageRoute(
                 builder: (context) => JTelefonEdit(
                   prodCity: widget.prodCity,
-                  prodName: '',
+                  prodName: 'jTelefon',
                   prodQuant: widget.prodQuant,
                 ),
               ));
@@ -142,4 +185,5 @@ class _CardItemState extends State<CardItem> {
           );
         });
   }
-}*/
+}
+*/

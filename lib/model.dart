@@ -1,27 +1,35 @@
-/* import 'package:cloud_firestore/cloud_firestore.dart';
+
+
+/*
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class StockItem {
   String id;
-  String product;
-  String city;
-  int quantity;
+  String prodName;
+  String prodCity;
+  dynamic prodQuant;
 
   StockItem(
       {required this.id,
-      required this.product,
-      required this.city,
-      required this.quantity});
+      required this.prodName,
+      required this.prodCity,
+      required this.prodQuant});
 
   Map<String, dynamic> createMap() {
-    return {'id': id, 'product': product, 'city': city, 'quantity': quantity};
+    return {
+      'id': id,
+      'prodName': prodName,
+      'prodCity': prodCity,
+      'prodQuant': prodQuant
+    };
   }
 
   StockItem.fromIdAndJson(Map<String, dynamic> parsedJSON)
       : id = parsedJSON['id'],
-        product = parsedJSON['product'],
-        city = parsedJSON['city'],
-        quantity = parsedJSON['quantity'];
+        prodName = parsedJSON['prodName'],
+        prodCity = parsedJSON['prodCity'],
+        prodQuant = parsedJSON['prodQuant'];
 }
 
 class StockState extends ChangeNotifier {
@@ -31,7 +39,7 @@ class StockState extends ChangeNotifier {
 
   Stream<List<StockItem>> getStock() {
     return FirebaseFirestore.instance
-        .collection('Stock')
+        .collection('Stock_test')
         .snapshots()
         .map((snapShot) => snapShot.docs.map((document) {
               print(document);
@@ -39,18 +47,80 @@ class StockState extends ChangeNotifier {
             }).toList());
   }
 
-  Future<void> updateStock(StockItem stock) {
+  */
+
+  /* Future<void> updateStock(StockItem stock) {
     return FirebaseFirestore.instance
         .collection('Stock')
         .doc(stock.id)
-        .update({'quantity': stock.quantity})
+        .update({'quantity': stock.prodQuant})
         .then((value) => print('Stock updated'))
         .catchError((error) => print('Failed to update task: $error'));
+  }*/
+
+/*
+  //variabler att använda för att beräkna nytt lagersaldo
+  var num1 = 0, num2 = 0, sum = 0;
+
+//texteditingcontroller för textfältet
+  final TextEditingController jTelefonController = TextEditingController();
+
+  //INLEVERANS JTELEFON
+  Future<void> _addJTelefonQuantity(StockItem stock) async {
+    var collection = FirebaseFirestore.instance.collection('Stock_test');
+    var docSnapshot = await collection.doc(stock.id).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      var jtelefonsavedquantity = data['prodQuant'];
+
+      num1 = int.parse(jTelefonController.text);
+      num2 = jtelefonsavedquantity;
+      sum = num1 + num2;
+
+      _updateJTelefonQuantity(StockItem(
+          id: stock.id,
+          prodCity: stock.prodCity,
+          prodName: stock.prodName,
+          prodQuant: stock.prodQuant));
+      jTelefonController.clearComposing();
+    }
+  }
+
+  //UTLEVERANS JTELEFON
+  Future<void> _subtractJTelefonQuantity(StockItem stock) async {
+    var collection = FirebaseFirestore.instance.collection('Stock_test');
+    var docSnapshot = await collection.doc(stock.id).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      var jtelefonsavedquantity = data['prodQuant'];
+
+      num1 = int.parse(jTelefonController.text);
+      num2 = jtelefonsavedquantity;
+      sum = num2 - num1;
+
+      _updateJTelefonQuantity(StockItem(
+          id: stock.id,
+          prodCity: stock.prodCity,
+          prodName: stock.prodName,
+          prodQuant: stock.prodQuant));
+      jTelefonController.clearComposing();
+    }
+  }
+
+//UPPDATERA LAGERSALDO
+  Future<void> _updateJTelefonQuantity(StockItem stock) async {
+    final jTelefonQuantity = sum;
+
+    FirebaseFirestore.instance
+        .collection('Stock_test')
+        .doc(stock.id)
+        .update({'prodQuant': jTelefonQuantity})
+        .then((value) => print('Product updated'))
+        .catchError((error) => print('Failed to update product: $error'));
   }
 }
-
+ 
 */
-
 
 
   /*
@@ -83,6 +153,4 @@ class StockState extends ChangeNotifier {
   }
     
   }
-        
         */
-
