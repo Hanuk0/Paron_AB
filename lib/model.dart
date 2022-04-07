@@ -4,13 +4,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class StockItem {
+class StockItemModel {
   String id;
   String prodName;
   String prodCity;
   dynamic prodQuant;
 
-  StockItem(
+  StockItemModel(
       {required this.id,
       required this.prodName,
       required this.prodCity,
@@ -25,7 +25,7 @@ class StockItem {
     };
   }
 
-  StockItem.fromIdAndJson(Map<String, dynamic> parsedJSON)
+  StockItemModel.fromIdAndJson(Map<String, dynamic> parsedJSON)
       : id = parsedJSON['id'],
         prodName = parsedJSON['prodName'],
         prodCity = parsedJSON['prodCity'],
@@ -33,11 +33,11 @@ class StockItem {
 }
 
 class StockState extends ChangeNotifier {
-  final List<StockItem> _list = [];
+  final List<StockItemModel> _list = [];
 
   List<StockItem> get list => _list;
 
-  Stream<List<StockItem>> getStock() {
+  Stream<List<StockItemModel>> getStock() {
     return FirebaseFirestore.instance
         .collection('Stock_test')
         .snapshots()
@@ -49,7 +49,7 @@ class StockState extends ChangeNotifier {
 
   */
 
-  /* Future<void> updateStock(StockItem stock) {
+  /* Future<void> updateStock(StockItemModel stock) {
     return FirebaseFirestore.instance
         .collection('Stock')
         .doc(stock.id)
@@ -66,7 +66,7 @@ class StockState extends ChangeNotifier {
   final TextEditingController jTelefonController = TextEditingController();
 
   //INLEVERANS JTELEFON
-  Future<void> _addJTelefonQuantity(StockItem stock) async {
+  Future<void> _addJTelefonQuantity(StockItemModel stock) async {
     var collection = FirebaseFirestore.instance.collection('Stock_test');
     var docSnapshot = await collection.doc(stock.id).get();
     if (docSnapshot.exists) {
@@ -77,7 +77,7 @@ class StockState extends ChangeNotifier {
       num2 = jtelefonsavedquantity;
       sum = num1 + num2;
 
-      _updateJTelefonQuantity(StockItem(
+      _updateJTelefonQuantity(StockItemModel(
           id: stock.id,
           prodCity: stock.prodCity,
           prodName: stock.prodName,
@@ -87,7 +87,7 @@ class StockState extends ChangeNotifier {
   }
 
   //UTLEVERANS JTELEFON
-  Future<void> _subtractJTelefonQuantity(StockItem stock) async {
+  Future<void> _subtractJTelefonQuantity(StockItemModel stock) async {
     var collection = FirebaseFirestore.instance.collection('Stock_test');
     var docSnapshot = await collection.doc(stock.id).get();
     if (docSnapshot.exists) {
@@ -98,7 +98,7 @@ class StockState extends ChangeNotifier {
       num2 = jtelefonsavedquantity;
       sum = num2 - num1;
 
-      _updateJTelefonQuantity(StockItem(
+      _updateJTelefonQuantity(StockItemModel(
           id: stock.id,
           prodCity: stock.prodCity,
           prodName: stock.prodName,
@@ -108,7 +108,7 @@ class StockState extends ChangeNotifier {
   }
 
 //UPPDATERA LAGERSALDO
-  Future<void> _updateJTelefonQuantity(StockItem stock) async {
+  Future<void> _updateJTelefonQuantity(StockItemModel stock) async {
     final jTelefonQuantity = sum;
 
     FirebaseFirestore.instance

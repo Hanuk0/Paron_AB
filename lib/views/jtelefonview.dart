@@ -13,33 +13,8 @@ class JTelefonView extends StatefulWidget {
 }
 
 class _JTelefonViewState extends State<JTelefonView> {
-  //variabler som används för att beräkna totalt lagersaldo
-  var num1 = 0, num2 = 0, num3 = 0, sum = 0;
-
-//funktion för att räkna ut totalt lagersaldo
-  void calcTotalSumJTelefon() async {
-    var collection = FirebaseFirestore.instance.collection('jTelefon');
-    var docSnapshot = await collection.doc('jTelefonID').get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic> data = docSnapshot.data()!;
-      var jtelefonsavedCupertinoquantity = data['jTelefonCupertinoQuant'];
-      var jtelefonsavedFrankfurtquantity = data['jTelefonFrankfurtQuant'];
-      var jtelefonsavedNorrkopingquantity = data['jTelefonNorrkopingQuant'];
-
-      if (!mounted) return; //ta bort om något knasar
-
-      setState(() {
-        num1 = jtelefonsavedNorrkopingquantity;
-        num2 = jtelefonsavedCupertinoquantity;
-        num3 = jtelefonsavedFrankfurtquantity;
-        sum = num1 + num2 + num3;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext contextk) {
-    calcTotalSumJTelefon();
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -59,9 +34,9 @@ class _JTelefonViewState extends State<JTelefonView> {
               Container(height: 10),
               const Text('Product price: 8900 kr'),
               Container(height: 20),
-              Text(
-                'Total stock jTelefon: $sum ',
-                style: const TextStyle(
+              const Text(
+                'Total stock jTelefon:  ',
+                style: TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
@@ -78,12 +53,13 @@ class _JTelefonViewState extends State<JTelefonView> {
                       .collection('Stock_test')
                       .where('prodNr', isEqualTo: 'P001')
                       .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                  builder: (BuildContext context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Text('Loading...');
                     }
-                    return ListView.builder(
+                    return buildList(snapshot.requireData);
+
+                    /*return ListView.builder(
                         itemCount: snapshot.data?.docs.length,
                         itemBuilder: (context, index) {
                           String prodName =
@@ -97,7 +73,7 @@ class _JTelefonViewState extends State<JTelefonView> {
                               prodName: prodName,
                               prodCity: prodCity,
                               prodQuant: prodQuant);
-                        });
+                        });*/
                   },
                 ),
               ),
@@ -107,10 +83,12 @@ class _JTelefonViewState extends State<JTelefonView> {
   }
 }
 
+/*
 class CardItem extends StatefulWidget {
   late String prodName;
   late String prodCity;
   late dynamic prodQuant;
+
   //late dynamic prodPrice;
 
   CardItem(
@@ -148,42 +126,50 @@ class _CardItemState extends State<CardItem> {
       ),
     );
   }
-}
+} */
 
-  
-
-
-
-
-        /*
+/*
+        
         body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('Stock').snapshots(),
+          stream: FirebaseFirestore.instance.collection('Stock_test').snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return const LinearProgressIndicator();
             return _buildList(snapshot.requireData);
           },
         ));
-  }
+  }*/
 
-  Widget _buildList(QuerySnapshot snapshot) {
-    return ListView.builder(
-        itemCount: snapshot.docs.length,
-        itemBuilder: (context, index) {
-          final doc = snapshot.docs[
-              index]; //för att kunna kalla på olika delar från ett doc, exempelvis doc['name']
+Widget buildList(QuerySnapshot snapshot) {
+  return ListView.builder(
+      itemCount: snapshot.docs.length,
+      itemBuilder: (context, index) {
+        final doc = snapshot.docs[
+            index]; //för att kunna kalla på olika delar från ett doc, exempelvis doc['name']
 
-          //Lista på produkter med namn, produktnummer och pris
-          return ListTile(
-            title: Text(doc['product']),
-            subtitle: Text(doc['quantity'].toString()),
-            trailing: Text(doc['city']),
+        //Lista på produkter med namn, produktnummer och pris
+        return ListTile(
+            key: Key(doc.id),
+            contentPadding: const EdgeInsets.all(16),
+            leading: const Icon(Icons.warehouse_sharp),
+            title: Text(doc['prodCity']),
+            subtitle: const Text('Edit stock'),
+            trailing: Text('Quantity: ' + doc['prodQuant'].toString()),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => JTelefonEdit(
+                      id: doc.id,
+                      prodCity: doc['prodCity'],
+                      prodName: doc['prodName'],
+                      prodQuant: doc['prodQuant'],
+                    ),
+                  ));
 
-            //  onTap: () => MaterialPageRoute(
-            //     builder: ((context) => const ProductPage()),
+              //  onTap: () => MaterialPageRoute(
+              //     builder: ((context) => const ProductPage()),
 
-            // trailing: Text(doc['price'].toString() + ' kr'),
-          );
-        });
-  }
+              // trailing: Text(doc['price'].toString() + ' kr'),
+            });
+      });
 }
-*/

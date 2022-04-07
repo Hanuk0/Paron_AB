@@ -1,14 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:paron_ab/views/jtelefonview.dart';
 
 class JTelefonEdit extends StatefulWidget {
   JTelefonEdit(
       {Key? key,
+      required this.id,
       required this.prodName,
       required this.prodCity,
       this.prodQuant})
       : super(key: key);
 
+  String id;
   String prodName;
   String prodCity;
   dynamic prodQuant;
@@ -28,7 +32,7 @@ class _JTelefonEditState extends State<JTelefonEdit> {
   void _addJTelefonQuantity() async {
     var collection = FirebaseFirestore.instance.collection('Stock_test');
 
-    var docSnapshot = await collection.doc('jTelefonNorrköping').get();
+    var docSnapshot = await collection.doc(widget.id).get();
 
     if (docSnapshot.exists) {
       Map<String, dynamic> data = docSnapshot.data()!;
@@ -47,7 +51,7 @@ class _JTelefonEditState extends State<JTelefonEdit> {
   //UTLEVERANS JTELEFON
   void _subtractJTelefonQuantity() async {
     var collection = FirebaseFirestore.instance.collection('Stock_test');
-    var docSnapshot = await collection.doc('jTelefonNorrköping').get();
+    var docSnapshot = await collection.doc(widget.id).get();
     if (docSnapshot.exists) {
       Map<String, dynamic> data = docSnapshot.data()!;
       var jtelefonsavedquantity = data['prodQuant'];
@@ -68,7 +72,7 @@ class _JTelefonEditState extends State<JTelefonEdit> {
 
     FirebaseFirestore.instance
         .collection('Stock_test')
-        .doc('jTelefonNorrköping')
+        .doc(widget.id)
         .update({'prodQuant': jTelefonQuantity})
         .then((value) => print('Product updated'))
         .catchError((error) => print('Failed to update product: $error'));
