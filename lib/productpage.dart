@@ -21,7 +21,7 @@ class ProductPage extends StatelessWidget {
             Container(height: 30),
             const Text(
               ('Products'),
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             Container(height: 20),
             GestureDetector(
@@ -34,9 +34,16 @@ class ProductPage extends StatelessWidget {
               },
               child: const Card(
                 child: ListTile(
-                  title: Text('jTelefon'),
-                  // subtitle: Text('Edit stock balance'),
-                  trailing: Icon(Icons.chevron_right),
+                  contentPadding: EdgeInsets.all(11),
+                  title: Text('jTelefon',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                  subtitle: Text('Tap to see more info and edit'),
+                  trailing: Icon(
+                    Icons.chevron_right,
+                    size: 40,
+                    color: Colors.teal,
+                  ),
                 ),
               ),
             ),
@@ -51,9 +58,16 @@ class ProductPage extends StatelessWidget {
               },
               child: const Card(
                 child: ListTile(
-                  title: Text('jPlatta'),
-                  //   subtitle: Text('Edit stock balance'),
-                  trailing: Icon(Icons.chevron_right),
+                  contentPadding: EdgeInsets.all(11),
+                  title: Text('jPlatta',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                  subtitle: Text('Tap to see more info and edit'),
+                  trailing: Icon(
+                    Icons.chevron_right,
+                    size: 40,
+                    color: Colors.teal,
+                  ),
                 ),
               ),
             ),
@@ -68,9 +82,16 @@ class ProductPage extends StatelessWidget {
               },
               child: const Card(
                 child: ListTile(
-                  title: Text('Päronklocka'),
-                  //  subtitle: Text('Edit stock balance'),
-                  trailing: Icon(Icons.chevron_right),
+                  contentPadding: EdgeInsets.all(11),
+                  title: Text('Päronklocka',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                  subtitle: Text('Tap to see more info and edit'),
+                  trailing: Icon(
+                    Icons.chevron_right,
+                    size: 40,
+                    color: Colors.teal,
+                  ),
                 ),
               ),
             )
@@ -80,76 +101,3 @@ class ProductPage extends StatelessWidget {
     );
   }
 }
-
-
-/* KANSKE VILL BEHÅLLA
-
-Widget _jTelefon(context) {
-  return ListTile(
-    leading: Icon(
-      Icons.note_alt_sharp,
-      size: 30,
-      color: Colors.green.shade800,
-    ),
-    //   onTap: () => Navigator.push(context,
-    //       MaterialPageRoute(builder: (context) => DescriptionView(task))),
-    title: Text('jTelefon'),
-    subtitle: Text('quantity'),
-    trailing: IconButton(
-      icon: const Icon(Icons.chevron_right),
-      onPressed: () {},
-    ),
-  );
-}
-
-Widget _jPlatta(context) {
-  return ListTile(
-    leading: Icon(
-      Icons.note_alt_sharp,
-      size: 30,
-      color: Colors.green.shade800,
-    ),
-    //   onTap: () => Navigator.push(context,
-    //       MaterialPageRoute(builder: (context) => DescriptionView(task))),
-    title: Text('jPlatta'),
-    subtitle: Text('quantity'),
-    trailing: IconButton(
-      icon: const Icon(Icons.chevron_right),
-      onPressed: () {},
-    ),
-  );
-}
-
-Widget _päronKlocka(context) {
-  return ListTile(
-    leading: Icon(
-      Icons.note_alt_sharp,
-      size: 30,
-      color: Colors.green.shade800,
-    ),
-    //   onTap: () => Navigator.push(context,
-    //       MaterialPageRoute(builder: (context) => DescriptionView(task))),
-    title: Text('Päronklocka'),
-    subtitle: Text('quantity'),
-    trailing: IconButton(
-      icon: const Icon(Icons.chevron_right),
-      onPressed: () {},
-    ),
-  );
-}
-*/
-
-/* class ProductPage extends StatefulWidget {
-  final stock;
-  const ProductPage(this.stock, {Key? key}) : super(key: key);
-
-  @override
-  State<ProductPage> createState() {
-    return ProductPageState(stock);
-  }
-} 
-
-
-class ProductPageState extends State<ProductPage> {
-  final stock;
-  ProductPageState(this.stock); */
