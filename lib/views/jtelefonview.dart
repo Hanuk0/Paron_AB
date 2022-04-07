@@ -31,23 +31,29 @@ class _JTelefonViewState extends State<JTelefonView> {
                 mainAxisAlignment: MainAxisAlignment.center,
               ),
               Container(height: 10),
-              const Text('Product number: P001'),
+              const Text(
+                'Product number: P001',
+                style: TextStyle(fontSize: 17),
+              ),
               Container(height: 10),
-              const Text('Product price: 8900 kr'),
+              const Text(
+                'Product price: 8900 kr',
+                style: TextStyle(fontSize: 17),
+              ),
               Container(height: 20),
               const Text(
                 'Total stock jTelefon:  ',
-                style: TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-              ),
-              Container(height: 30),
-              const Text(
-                ('Warehouses'),
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
               Container(height: 20),
+              const Text(
+                ('Warehouses'),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const Divider(
+                thickness: 2,
+                color: Colors.teal,
+              ),
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
                   stream: widget._firestore
@@ -135,24 +141,33 @@ Widget buildList(QuerySnapshot snapshot) {
             index]; //för att kunna kalla på olika delar från ett doc, exempelvis doc['name']
 
         //Lista på produkter med prduktstad och produktlager
-        return ListTile(
-            key: Key(doc.id),
-            contentPadding: const EdgeInsets.all(16),
-            leading: const Icon(Icons.warehouse_sharp),
-            title: Text(doc['prodCity']),
-            subtitle: const Text('Tap to edit stock'),
-            trailing: Text('Quantity: ' + doc['prodQuant'].toString()),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => JTelefonEdit(
-                      id: doc.id,
-                      prodCity: doc['prodCity'],
-                      prodName: doc['prodName'],
-                      prodQuant: doc['prodQuant'],
-                    ),
-                  ));
-            });
+        return Card(
+            child: ListTile(
+                key: Key(doc.id),
+                contentPadding: const EdgeInsets.all(16),
+                leading: const Icon(
+                  Icons.warehouse_sharp,
+                  size: 30,
+                ),
+                title: Text(doc['prodCity'],
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w500)),
+                subtitle: const Text('Tap to edit stock'),
+                trailing: Text(
+                  'Quantity: ' + doc['prodQuant'].toString(),
+                  style: const TextStyle(fontSize: 15),
+                ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => JTelefonEdit(
+                          id: doc.id,
+                          prodCity: doc['prodCity'],
+                          prodName: doc['prodName'],
+                          prodQuant: doc['prodQuant'],
+                        ),
+                      ));
+                }));
       });
 }
