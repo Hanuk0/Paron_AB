@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../edit/jplattaedit.dart';
+
 class JPlattaView extends StatefulWidget {
   JPlattaView({Key? key}) : super(key: key);
 
@@ -12,45 +14,79 @@ class JPlattaView extends StatefulWidget {
 
 class _JPlattaViewState extends State<JPlattaView> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext contextk) {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('jTelefon'),
+          title: const Text('jPlatta'),
         ),
-        body: StreamBuilder<QuerySnapshot>(
-          stream: widget._firestore
-              .collection('Stock1')
-              .doc('jPlatta')
-              .collection('jPlatta1')
-              .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return const Text('Loading...');
-            }
-            return ListView.builder(
-                itemCount: snapshot.data?.docs.length,
-                itemBuilder: (context, index) {
-                  String prodName = snapshot.data!.docs[index]['prodName'];
-                  String prodCity = snapshot.data!.docs[index]['prodCity'];
-                  dynamic prodQuant = snapshot.data!.docs[index]['prodQuant'];
+        body: Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+              Container(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              Container(height: 10),
+              const Text('Product number: P002'),
+              Container(height: 10),
+              const Text('Product price: 5700 kr'),
+              Container(height: 20),
+              const Text(
+                'Total stock jPlatta:  ',
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),
+              Container(height: 30),
+              const Text(
+                ('Warehouses'),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Container(height: 20),
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: widget._firestore
+                      .collection('Stock_test')
+                      .where('prodNr', isEqualTo: 'P002')
+                      .snapshots(),
+                  builder: (BuildContext context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Text('Loading...');
+                    }
+                    return buildList(snapshot.requireData);
 
-                  return CardItem(
-                      prodName: prodName,
-                      prodCity: prodCity,
-                      prodQuant: prodQuant);
-                });
-          },
-        ));
+                    /*return ListView.builder(
+                        itemCount: snapshot.data?.docs.length,
+                        itemBuilder: (context, index) {
+                          String prodName =
+                              snapshot.data!.docs[index]['prodName'];
+                          String prodCity =
+                              snapshot.data!.docs[index]['prodCity'];
+                          dynamic prodQuant =
+                              snapshot.data!.docs[index]['prodQuant'];
+
+                          return CardItem(
+                              prodName: prodName,
+                              prodCity: prodCity,
+                              prodQuant: prodQuant);
+                        });*/
+                  },
+                ),
+              ),
+            ])));
   }
 }
 
+/*
 class CardItem extends StatefulWidget {
   late String prodName;
   late String prodCity;
   late dynamic prodQuant;
-  //late String prodNr;
+
   //late dynamic prodPrice;
 
   CardItem(
@@ -74,7 +110,48 @@ class _CardItemState extends State<CardItem> {
         title: Text(widget.prodCity),
         subtitle: const Text('Edit stock'),
         trailing: Text('Quantity ' + widget.prodQuant.toString()),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => JTelefonEdit(
+                  prodCity: widget.prodCity,
+                  prodName: 'jTelefon',
+                  prodQuant: widget.prodQuant,
+                ),
+              ));
+        },
       ),
     );
   }
+} */
+
+Widget buildList(QuerySnapshot snapshot) {
+  return ListView.builder(
+      itemCount: snapshot.docs.length,
+      itemBuilder: (context, index) {
+        final doc = snapshot.docs[
+            index]; //för att kunna kalla på olika delar från ett doc, exempelvis doc['name']
+
+        //Lista på produkter med prduktstad och produktlager
+        return ListTile(
+            key: Key(doc.id),
+            contentPadding: const EdgeInsets.all(16),
+            leading: const Icon(Icons.warehouse_sharp),
+            title: Text(doc['prodCity']),
+            subtitle: const Text('Tap to edit stock'),
+            trailing: Text('Quantity: ' + doc['prodQuant'].toString()),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => JPlattaEdit(
+                      id: doc.id,
+                      prodCity: doc['prodCity'],
+                      prodName: doc['prodName'],
+                      prodQuant: doc['prodQuant'],
+                    ),
+                  ));
+            });
+      });
 }

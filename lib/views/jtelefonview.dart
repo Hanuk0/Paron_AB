@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:paron_ab/jtelefonedit.dart';
+import 'package:paron_ab/edit/jtelefonedit.dart';
 
 class JTelefonView extends StatefulWidget {
   JTelefonView({
     Key? key,
   }) : super(key: key);
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
@@ -77,8 +78,6 @@ class _JTelefonViewState extends State<JTelefonView> {
                   },
                 ),
               ),
-              //Container(height: 20),
-              //const Text('Total Stock: '),
             ])));
   }
 }
@@ -128,17 +127,6 @@ class _CardItemState extends State<CardItem> {
   }
 } */
 
-/*
-        
-        body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('Stock_test').snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return const LinearProgressIndicator();
-            return _buildList(snapshot.requireData);
-          },
-        ));
-  }*/
-
 Widget buildList(QuerySnapshot snapshot) {
   return ListView.builder(
       itemCount: snapshot.docs.length,
@@ -146,13 +134,13 @@ Widget buildList(QuerySnapshot snapshot) {
         final doc = snapshot.docs[
             index]; //för att kunna kalla på olika delar från ett doc, exempelvis doc['name']
 
-        //Lista på produkter med namn, produktnummer och pris
+        //Lista på produkter med prduktstad och produktlager
         return ListTile(
             key: Key(doc.id),
             contentPadding: const EdgeInsets.all(16),
             leading: const Icon(Icons.warehouse_sharp),
             title: Text(doc['prodCity']),
-            subtitle: const Text('Edit stock'),
+            subtitle: const Text('Tap to edit stock'),
             trailing: Text('Quantity: ' + doc['prodQuant'].toString()),
             onTap: () {
               Navigator.push(
@@ -165,11 +153,6 @@ Widget buildList(QuerySnapshot snapshot) {
                       prodQuant: doc['prodQuant'],
                     ),
                   ));
-
-              //  onTap: () => MaterialPageRoute(
-              //     builder: ((context) => const ProductPage()),
-
-              // trailing: Text(doc['price'].toString() + ' kr'),
             });
       });
 }
