@@ -90,7 +90,7 @@ class _JPlattaEditState extends State<JPlattaEdit> {
                 children: [
               Container(height: 30),
               Text(
-                (widget.prodCity),
+                widget.prodName + ' ' + (widget.prodCity),
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
@@ -127,6 +127,7 @@ class _JPlattaEditState extends State<JPlattaEdit> {
                       style: TextStyle(fontSize: 18),
                     ),
                     style: ElevatedButton.styleFrom(
+                        primary: Colors.red,
                         fixedSize: const Size(160, 40),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12))),
