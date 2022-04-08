@@ -40,10 +40,10 @@ class _JPlattaViewState extends State<JPlattaView> {
                 style: TextStyle(fontSize: 17),
               ),
               Container(height: 20),
-              const Text(
-                'Total stock jPlatta:  ',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              ),
+              //  const Text(
+              //    'Total stock jPlatta:  ',
+              //    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              //  ),
               Container(height: 20),
               const Text(
                 ('Warehouses'),

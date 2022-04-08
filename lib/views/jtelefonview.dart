@@ -41,10 +41,10 @@ class _JTelefonViewState extends State<JTelefonView> {
                 style: TextStyle(fontSize: 17),
               ),
               Container(height: 20),
-              const Text(
-                'Total stock jTelefon:  ',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              ),
+              //   const Text(
+              //     'Total stock jTelefon:  ',
+              //     style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              //   ),
               Container(height: 20),
               const Text(
                 ('Warehouses'),
