@@ -64,73 +64,12 @@ class _JPlattaViewState extends State<JPlattaView> {
                       return const Text('Loading...');
                     }
                     return buildList(snapshot.requireData);
-
-                    /*return ListView.builder(
-                        itemCount: snapshot.data?.docs.length,
-                        itemBuilder: (context, index) {
-                          String prodName =
-                              snapshot.data!.docs[index]['prodName'];
-                          String prodCity =
-                              snapshot.data!.docs[index]['prodCity'];
-                          dynamic prodQuant =
-                              snapshot.data!.docs[index]['prodQuant'];
-
-                          return CardItem(
-                              prodName: prodName,
-                              prodCity: prodCity,
-                              prodQuant: prodQuant);
-                        });*/
                   },
                 ),
               ),
             ])));
   }
 }
-
-/*
-class CardItem extends StatefulWidget {
-  late String prodName;
-  late String prodCity;
-  late dynamic prodQuant;
-
-  //late dynamic prodPrice;
-
-  CardItem(
-      {Key? key,
-      required this.prodName,
-      required this.prodCity,
-      this.prodQuant})
-      : super(key: key);
-
-  @override
-  State<CardItem> createState() => _CardItemState();
-}
-
-class _CardItemState extends State<CardItem> {
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(16),
-        leading: const Icon(Icons.warehouse_sharp),
-        title: Text(widget.prodCity),
-        subtitle: const Text('Edit stock'),
-        trailing: Text('Quantity ' + widget.prodQuant.toString()),
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => JTelefonEdit(
-                  prodCity: widget.prodCity,
-                  prodName: 'jTelefon',
-                  prodQuant: widget.prodQuant,
-                ),
-              ));
-        },
-      ),
-    );
-  }
-} */
 
 Widget buildList(QuerySnapshot snapshot) {
   return ListView.builder(

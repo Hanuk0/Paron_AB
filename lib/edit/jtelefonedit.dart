@@ -25,10 +25,10 @@ class _JTelefonEditState extends State<JTelefonEdit> {
 //variabler att använda för att beräkna nytt lagersaldo
   var num1 = 0, num2 = 0, sum = 0;
 
-//texteditingcontroller för textfältet
+//controller som tar in vad användaren fyller i i textfältet
   final TextEditingController jTelefonController = TextEditingController();
 
-  //INLEVERANS JTELEFON
+  // Inleverans
   void _addJTelefonQuantity() async {
     var collection = FirebaseFirestore.instance.collection('Stock_test');
 
@@ -48,8 +48,8 @@ class _JTelefonEditState extends State<JTelefonEdit> {
     }
   }
 
-  //UTLEVERANS JTELEFON
-  void _subtractJTelefonQuantity() async {
+  // Utleverans
+  void _removeJTelefonQuantity() async {
     var collection = FirebaseFirestore.instance.collection('Stock_test');
     var docSnapshot = await collection.doc(widget.id).get();
     if (docSnapshot.exists) {
@@ -66,7 +66,7 @@ class _JTelefonEditState extends State<JTelefonEdit> {
     }
   }
 
-  //UPPDATERA LAGERSALDO
+  //Funktion för att uppdatera lagersaldot
   void _updateJTelefonQuantity() {
     final jTelefonQuantity = sum;
 
@@ -121,7 +121,7 @@ class _JTelefonEditState extends State<JTelefonEdit> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      _subtractJTelefonQuantity();
+                      _removeJTelefonQuantity();
                       Navigator.pop(context);
                     },
                     child: const Text(
