@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:paron_ab/login.dart';
 import 'productpage.dart';
 
 Future<void> main() async {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white,
       ),
       title: 'Päron Logistics',
-      home: const ProductPage(),
+      home: const LogIn(),
     );
   }
 }

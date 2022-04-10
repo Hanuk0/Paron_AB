@@ -23,10 +23,10 @@ class _ParonKlockaEditState extends State<ParonKlockaEdit> {
 //variabler att använda för att beräkna nytt lagersaldo
   var num1 = 0, num2 = 0, sum = 0;
 
-//texteditingcontroller för textfältet
+//controller som tar in vad användaren fyller i i textfältet
   final TextEditingController paronKlockaController = TextEditingController();
 
-  //INLEVERANS JPLATTA
+  // Inleverans
   void _addParonklockaQuantity() async {
     var collection = FirebaseFirestore.instance.collection('Stock_test');
 
@@ -46,8 +46,8 @@ class _ParonKlockaEditState extends State<ParonKlockaEdit> {
     }
   }
 
-  //UTLEVERANS JPlATTA
-  void _subtractParonKlockaQuantity() async {
+  // Utleverans
+  void _removeParonKlockaQuantity() async {
     var collection = FirebaseFirestore.instance.collection('Stock_test');
     var docSnapshot = await collection.doc(widget.id).get();
     if (docSnapshot.exists) {
@@ -64,7 +64,7 @@ class _ParonKlockaEditState extends State<ParonKlockaEdit> {
     }
   }
 
-  //UPPDATERA LAGERSALDO
+  //Funktion för uppdatering av lagersaldo
   void _updateParonKlockaQuantity() {
     final paronKlockaQuantity = sum;
 
@@ -90,7 +90,7 @@ class _ParonKlockaEditState extends State<ParonKlockaEdit> {
                 children: [
               Container(height: 30),
               Text(
-                (widget.prodCity),
+                widget.prodName + ' ' + (widget.prodCity),
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
@@ -119,7 +119,7 @@ class _ParonKlockaEditState extends State<ParonKlockaEdit> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      _subtractParonKlockaQuantity();
+                      _removeParonKlockaQuantity();
                       Navigator.pop(context);
                     },
                     child: const Text(
@@ -127,6 +127,7 @@ class _ParonKlockaEditState extends State<ParonKlockaEdit> {
                       style: TextStyle(fontSize: 18),
                     ),
                     style: ElevatedButton.styleFrom(
+                        primary: Colors.red,
                         fixedSize: const Size(160, 40),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12))),
